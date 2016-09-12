@@ -1,0 +1,37 @@
+<div class="container" >
+  <div class='rows'>
+
+    <div class="col-xs-4">
+      <ul class="user">
+        <!-- appending username  -->
+        <li class="" ng-repeat="user_list in user_show" ng-style="{
+                          'background': clicked==user_list.id ?  '#d2d2d2' :'#e2e2e2',
+                          'cursor': my_id==user_list.id ?  'not-allowed' :'pointer'
+                      }" ng-click="clicked_highlight(user_list.id)">
+          <span id='{{user_list.id}}' >{{ user_list.user_name }}</span>
+                <span class='you' ng-style="{
+                          'display': my_id==user_list.id ? 'block' :'none'
+                      }">You</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="col-xs-8">
+      <!-- showing messages -->
+      <div class="chatbox" id="chatbox">
+        <p  ng-style="{
+                         'display': is_msg_show==true ? 'block' :'none'
+                      }">
+          <span class='sender'><strong>{{ msgs.name }} </strong>says:</span><br/>
+          <span class='sender_msg'>{{ msgs.msg }}</span>
+        </p>
+      </div>
+      <br/>
+      <div id="name-group" class="form-group">
+        <textarea class="form-control msg_box" id="msg_box" ng-model='msg_text' ng-keypress="send_msg($event)" placeholder="Type here and check the Title in Tab"></textarea>
+        <input type='text' style='display:none' ng-model='selected_id' />
+      </div>
+    </div>
+
+  </div>
+</div>

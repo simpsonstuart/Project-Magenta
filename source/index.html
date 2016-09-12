@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html ng-app="MyApp">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Secure Chat</title>
+  <link href="favicon.png" rel="shortcut icon">
+  <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,500,700" rel="stylesheet" type="text/css">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css" rel="stylesheet">
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet">
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+  <link href="//cdn.jsdelivr.net/animatecss/3.2.0/animate.css" rel="stylesheet">
+  <link href="/stylesheets/angular-toastr.css" rel="stylesheet">
+  <link href="/stylesheets/styles.css" rel="stylesheet">
+</head>
+<body>
+
+<div ui-view></div>
+
+<!-- Third-party Libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.12.0/lodash.min.js"></script>
+<script src="/vendor/angular.min.js"></script>
+<script src="/vendor/angular-animate.min.js"></script>
+<script src="/vendor/angular-messages.min.js"></script>
+<script src="/vendor/angular-resource.min.js"></script>
+<script src="/vendor/angular-sanitize.min.js"></script>
+<script src="/vendor/angular-ui-router.min.js"></script>
+<script src="/vendor/angular-toastr.tpls.min.js"></script>
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-aria.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+
+<!-- Application Code -->
+<script src="/app.js"></script>
+
+<script src="/controllers/ChatCtrl.js"></script>
+<script src="/controllers/ConnectCtrl.js"></script>
+</body>
+</html>
