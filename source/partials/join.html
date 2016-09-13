@@ -1,0 +1,12 @@
+<form name="joinSession" class="join_form">
+    <h2>Join Session</h2>
+<div class="input_group">
+    <label for="code">Session Code</label>
+    <input class="input_default" type="text" id="code" ng-model="ctrl.code" required />
+</div>
+    <div class="input_group">
+        <label for="secret">Session Secret</label>
+        <input class="input_default" type="text" id="secret" ng-model="ctrl.secret" required />
+    </div>
+    <button class="main_button" nd-disabled="joinSession.$invalid" ng-click="ctrl.joinSession()">Join</button>
+</form>

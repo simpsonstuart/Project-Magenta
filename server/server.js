@@ -156,6 +156,8 @@ app.post('/join_session', function(req, res) {
  | Create secure pairing code
  |--------------------------------------------------------------------------
  */
+
+//maybe create mock code on front end too test backend logic
 app.post('/store_code', function(req, res) {
     var pairingCode = new Pairing({
       displayName: req.body.displayName,

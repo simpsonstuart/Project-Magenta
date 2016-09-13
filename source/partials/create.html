@@ -1,0 +1,20 @@
+<form name="createSession" class="join_form">
+    <h2>Create Session</h2>
+    <div class="input_group">
+        <label for="name">Session Name</label>
+        <input class="input_default" type="text" id="name" ng-model="ctrl.name" required />
+    </div>
+    <div class="input_group">
+        <label for="date">Valid From</label>
+        <input class="input_default" type="date" id="date" ng-model="ctrl.dateFrom" required />
+    </div>
+    <div class="input_group">
+        <label for="dateToo">Valid Too</label>
+        <input class="input_default" type="date" id="dateToo" ng-model="ctrl.dateToo" required />
+    </div>
+    <div class="input_group">
+        <label for="maxuser">Max User Joins</label>
+        <input class="input_default" type="number" min="1" id="maxuser" ng-model="ctrl.maxUsers" required />
+    </div>
+    <button class="main_button" nd-disabled="createSession.$invalid" ng-click="ctrl.createSession()">Create</button>
+</form>

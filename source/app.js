@@ -12,7 +12,19 @@ angular.module('MyApp', ['ngResource', 'ngMessages', 'ngAnimate', 'toastr', 'ui.
           controller: 'ConnectCtrl',
           controllerAs: 'ctrl',
           templateUrl: 'partials/connect.html'
-      });
+      })
+        .state('create', {
+            url: '/create',
+            controller: 'CreateCtrl',
+            controllerAs: 'ctrl',
+            templateUrl: 'partials/create.html'
+        })
+        .state('join', {
+            url: '/join',
+            controller: 'JoinCtrl',
+            controllerAs: 'ctrl',
+            templateUrl: 'partials/join.html'
+        });
 
     $urlRouterProvider.otherwise('/chat');
 
