@@ -9,7 +9,6 @@ var bcrypt = require('bcryptjs');
 var colors = require('colors');
 var cors = require('cors');
 var express = require('express')();
-var logger = require('morgan');
 var jwt = require('jwt-simple');
 var moment = require('moment');
 var mongoose = require('mongoose');
@@ -19,7 +18,11 @@ var config = require('./config');
 //defining mongo schemas
 var pairingSchema = new mongoose.Schema({
   displayName: { type: String },
+  udid: {type: String},
   code: { type: String, select: false },
+  date_from: { type: String},
+  date_too: { type: String},
+  max_users: { type: String},
 });
 
 pairingSchema.pre('save', function(next) {
@@ -35,6 +38,7 @@ pairingSchema.pre('save', function(next) {
   });
 });
 
+// compares code with one stored in database
 pairingSchema.methods.compareCode = function(code, done) {
   bcrypt.compare(code, this.code, function(err, isMatch) {
     done(err, isMatch);
@@ -106,6 +110,12 @@ function createJWT(code) {
     return jwt.encode(payload, config.TOKEN_SECRET);
 }
 
+/*
+ |--------------------------------------------------------------------------
+ | Logic too emit encrypted messages too specific users
+ |--------------------------------------------------------------------------
+ */
+
 // creating array of users.
 var users=[];
 
@@ -139,29 +149,36 @@ io.on('connection',function(socket){
 
 /*
  |--------------------------------------------------------------------------
- | Join Session with Pairing Code
+ | Join Session with Pairing Code sends token as response
  |--------------------------------------------------------------------------
  */
 app.post('/join_session', function(req, res) {
-    Pairing.compareCode(req.body.code, function(err, isMatch) {
+    Pairing.findOne({ udid: req.body.udid }, function(err, pairing) {
+        if (!pairing) {
+            return res.status(401).send({ message: 'Invalid session code' });
+        }
+    pairing.compareCode(req.body.code, function(err, isMatch) {
       if (!isMatch) {
         return res.status(401).send({ message: 'Invalid session code' });
       }
       res.send({ token: createJWT(req.body.code) });
     });
+    });
 });
 
 /*
- |--------------------------------------------------------------------------
- | Create secure pairing code
- |--------------------------------------------------------------------------
+ |------------------------------------------------------------------------------
+ | Store created secure pairing code in database and send token as response
+ |------------------------------------------------------------------------------
  */
-
-//maybe create mock code on front end too test backend logic
 app.post('/store_code', function(req, res) {
     var pairingCode = new Pairing({
       displayName: req.body.displayName,
-      code: req.body.code
+      udid: req.body.udid,
+      code: req.body.code,
+      date_from: req.body.date_from,
+      date_too: req.body.date_too,
+      max_users: req.body.max_users,
     });
     pairingCode.save(function(err) {
       if (err) {

@@ -1,8 +1,18 @@
 angular.module('MyApp')
-    .controller('JoinCtrl', function($scope, $http, toastr, $stateParams, $state) {
+    .controller('JoinCtrl', function($scope, $http, toastr, $stateParams, $state, $log) {
         var ctrl = this;
         ctrl.joinSession = () => {
-            //todo add check code and set up logic such as store in local storage
-         $state.go('chat');
+            $http.post('/join_session', {
+                code: ctrl.code,
+                udid: ctrl.udid,
+            }).then((response) => {
+                    localStorage.setItem('token', response.data.token);
+                    $state.go('chat');
+                },
+                (response) => {
+                    if (response.status === 401) {
+                        toastr.error('Invalid Session Code! Please try again.');
+                    }
+                });
         }
     });

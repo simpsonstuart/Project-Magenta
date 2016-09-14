@@ -16,5 +16,5 @@
         <label for="maxuser">Max User Joins</label>
         <input class="input_default" type="number" min="1" id="maxuser" ng-model="ctrl.maxUsers" required />
     </div>
-    <button class="main_button" nd-disabled="createSession.$invalid" ng-click="ctrl.createSession()">Create</button>
+    <button class="main_button" ng-disabled="createSession.$invalid" ng-click="ctrl.createSession()">Create</button>
 </form>
