@@ -101,9 +101,9 @@ function ensureAuthenticated(req, res, next) {
  | Generate JSON Web Token
  |--------------------------------------------------------------------------
  */
-function createJWT(code) {
+function createJWT(pairing) {
     var payload = {
-        sub: code,
+        sub: pairing._id,
         iat: moment().unix(),
         exp: moment().add(1, 'days').unix()
     };
@@ -153,9 +153,9 @@ io.on('connection',function(socket){
  |--------------------------------------------------------------------------
  */
 app.post('/join_session', function(req, res) {
-    Pairing.findOne({ udid: req.body.udid }, function(err, pairing) {
+    Pairing.findOne({ udid: req.body.udid }, '+code', function(err, pairing) {
         if (!pairing) {
-            return res.status(401).send({ message: 'Invalid session code' });
+            return res.status(404).send({ message: 'Session ID not found' });
         }
     pairing.compareCode(req.body.code, function(err, isMatch) {
       if (!isMatch) {
@@ -180,11 +180,11 @@ app.post('/store_code', function(req, res) {
       date_too: req.body.date_too,
       max_users: req.body.max_users,
     });
-    pairingCode.save(function(err) {
+    pairingCode.save(function(err, result) {
       if (err) {
         res.status(500).send({ message: err.message });
       }
-      res.send({ token: createJWT(req.body.code) });
+      res.send({ token: createJWT(result) });
     });
 });
 

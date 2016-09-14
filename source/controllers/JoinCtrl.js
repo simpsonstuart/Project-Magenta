@@ -13,6 +13,9 @@ angular.module('MyApp')
                     if (response.status === 401) {
                         toastr.error('Invalid Session Code! Please try again.');
                     }
+                    if (response.status === 404) {
+                        toastr.error('Session ID not found!');
+                    }
                 });
         }
     });
