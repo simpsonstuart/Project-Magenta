@@ -2,7 +2,7 @@ angular.module('MyApp')
     .controller('ChatCtrl', function($scope, $http, toastr, $stateParams) {
         var ctrl = this;
 
-        var user_name=window.prompt('Enter Your Name'); //getting user name
+        ctrl.UserName = window.prompt('Enter Your Name');
 
         var socket = io();
         $scope.clicked=null;
@@ -11,8 +11,11 @@ angular.module('MyApp')
         $scope.my_id=null;
         $scope.is_msg_show=false;
 
+        // join specific session with session code
+        socket.emit('join', $stateParams.paringCode);
 
-        socket.emit('user name',user_name); // sending user name to the server
+        // adds user too list of users in chat
+        socket.emit('user name',ctrl.UserName); // sending user name to the server
 
         socket.on('user entrance',function(data,my_id){
             //checking the user id
@@ -23,22 +26,19 @@ angular.module('MyApp')
             $scope.$apply();
         });
 
-        //function to send messages.
-        $scope.send_msg = function($event){
+        // send message logic
+        ctrl.sendMessage = function($event){
             var keyCode = $event.which || $event.keyCode;
-            if($scope.selected_id==$scope.my_id){
-                alert("You can't send mmsg to your self.");
-            }else{
                 if (keyCode === 13) {
                     var data_server={
+                        too: $stateParams.paringCode,
                         id:$scope.selected_id,
-                        msg:$scope.msg_text,
-                        name:user_name
+                        msg: ctrl.message,
+                        name: ctrl.UserName,
                     };
                     $scope.msg_text='';
                     socket.emit('send msg',data_server);
                 }
-            }
         };
 
         //to highlight selected row

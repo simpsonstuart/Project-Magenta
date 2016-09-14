@@ -119,8 +119,12 @@ function createJWT(pairing) {
 // creating array of users.
 var users=[];
 
-// Auto initiated on connect too server
+// Auto initiated on connect to server
 io.on('connection',function(socket){
+
+    socket.on('join', function(room) {
+        socket.join(room);
+    });
 
     //Storing users into array as an object
     socket.on('user name',function(user_name){
@@ -132,11 +136,12 @@ io.on('connection',function(socket){
     });
 
     //Sending message to specific person
-    socket.on('send msg',function(data_server){
-        socket.broadcast.to(data_server.id).emit('get msg',{msg:data_server.msg,id:data_server.id,name:data_server.name});
+    socket.on('send msg',function(req){
+        console.log(req);
+        socket.broadcast.to(req.too).emit('get msg',{ msg:req.msg, id:req.id, name:req.name });
     });
 
-    //Removig user when user left the chatroom
+    //Removing user when user left the chatroom
     socket.on('disconnect',function(){
         for(var i=0;i<users.length;i++){
             if(users[i].id==socket.id){

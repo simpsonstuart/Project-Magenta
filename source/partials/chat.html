@@ -28,7 +28,7 @@
       </div>
       <br/>
       <div id="name-group" class="form-group">
-        <textarea class="form-control msg_box" id="msg_box" ng-model='msg_text' ng-keypress="send_msg($event)" placeholder="Type here and check the Title in Tab"></textarea>
+        <textarea class="form-control msg_box" id="msg_box" ng-model='ctrl.message' ng-keypress="ctrl.sendMessage($event)" placeholder="Type here and check the Title in Tab"></textarea>
         <input type='text' style='display:none' ng-model='selected_id' />
       </div>
     </div>
