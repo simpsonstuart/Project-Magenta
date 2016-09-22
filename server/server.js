@@ -126,6 +126,7 @@ io.on('connection',function(socket){
         socket.join(room);
     });
 
+    // todo modify socket too only emit too users of session and only show users of session
     //Storing users into array as an object
     socket.on('user name',function(user_name){
         users.push({id:socket.id,user_name:user_name});
@@ -137,8 +138,7 @@ io.on('connection',function(socket){
 
     //Sending message to specific person
     socket.on('send msg',function(req){
-        console.log(req);
-        socket.broadcast.to(req.too).emit('get msg',{ msg:req.msg, id:req.id, name:req.name });
+        socket.broadcast.to(req.too).emit('get msg',{ msg:req.msg, id:req.id, from:req.from });
     });
 
     //Removing user when user left the chatroom

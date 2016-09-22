@@ -7,7 +7,7 @@ angular.module('MyApp')
         $scope.msgs=null;
         $scope.my_id=null;
         ctrl.messages = [];
-
+        // kicks user too join if code and username missing
         if(!$stateParams.username || !$stateParams.paringCode) {
             $state.go('join');
         }
@@ -29,14 +29,15 @@ angular.module('MyApp')
 
         // send message logic
         ctrl.sendMessage = function($event){
-            var keyCode = $event.which || $event.keyCode;
+            let keyCode = $event.which || $event.keyCode;
                 if (keyCode === 13) {
-                    var message_params={
+                    let message_params={
                         too: $stateParams.paringCode,
                         msg: ctrl.message,
                         from: ctrl.UserName,
                     };
                     socket.emit('send msg',message_params);
+                    ctrl.messages.push(message_params);
                     ctrl.message = '';
                 }
         };
