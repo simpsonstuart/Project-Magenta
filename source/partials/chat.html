@@ -1,14 +1,10 @@
 <div class="container" >
   <div class='rows'>
-
     <div class="col-xs-4">
       <ul class="user">
-        <!-- appending username  -->
-        <li class="" ng-repeat="user in ctrl.users">
+        <li class="" ng-repeat="user in ctrl.users" ng-style="{'background-color': my_id==user.id ? '#cbcbcb' :'#E2E2E2'}">
           <span id='{{user.id}}' >{{ user.user_name }}</span>
-                <span class='you' ng-style="{
-                          'display': my_id==user.id ? 'block' :'none'
-                      }">You</span>
+          <span class='you' ng-style="{'display': my_id==user.id ? 'block' :'none'}">You</span>
         </li>
       </ul>
     </div>
@@ -25,7 +21,7 @@
       </div>
       <br/>
       <div id="name-group" class="form-group">
-        <textarea class="form-control msg_box" id="msg_box" ng-model='ctrl.message' ng-keypress="ctrl.sendMessage($event)" placeholder="Type here and check the Title in Tab"></textarea>
+        <textarea class="form-control msg_box" id="msg_box" ng-model='ctrl.message' ng-keypress="ctrl.sendMessage($event)" placeholder="Type message here"></textarea>
         <input type='text' style='display:none' ng-model='selected_id' />
       </div>
     </div>

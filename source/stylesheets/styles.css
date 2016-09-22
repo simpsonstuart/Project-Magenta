@@ -325,10 +325,12 @@ body {
   border: solid 1px #BDBDBD;
 }
 .user li{
-  text-decoration: none;
-  list-style-type: none;
-  padding: 10px;
-  cursor: pointer;
+    text-decoration: none;
+    list-style-type: none;
+    padding: 10px;
+    cursor: pointer;
+    margin-top: 5px;
+    height: 35px;
 }
 .you{
   font-size: 10px;
