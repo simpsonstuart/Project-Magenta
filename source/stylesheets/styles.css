@@ -336,14 +336,20 @@ body {
   float: right;
   color: #353535;
 }
-p{
-  margin: 50px;
-}
 .sender{
-  font-size: 25px;
+    font-size: 18px;
+    padding: 5px;
+    background-color: rgb(241, 241, 241);
+    border-radius: 10px;
 }
 .sender_msg{
   padding-left: 25px;
+}
+.messages_holder {
+    padding: 20px;
+}
+label {
+    display: block;
 }
 /* Fonts*/
 

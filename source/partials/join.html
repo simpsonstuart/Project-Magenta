@@ -1,16 +1,20 @@
 <form name="joinSession" class="join_form">
     <h2>Join Session</h2>
     <div class="input_group">
+        <label for="name">Name</label>
+        <input class="input_default" type="text" id="name" ng-model="ctrl.userName" required />
+    </div>
+    <div class="input_group">
         <label for="ID">Session ID</label>
         <input class="input_default" type="text" id="ID" ng-model="ctrl.udid" required />
     </div>
-<div class="input_group">
+    <div class="input_group">
     <label for="code">Session Code</label>
     <input class="input_default" type="text" id="code" ng-model="ctrl.code" required />
-</div>
+    </div>
     <div class="input_group">
-        <label for="secret">Session Secret</label>
-        <input class="input_default" type="text" id="secret" ng-model="ctrl.secret" required />
+    <label for="secret">Session Secret</label>
+    <input class="input_default" type="text" id="secret" ng-model="ctrl.secret" required />
     </div>
     <button class="main_button" ng-disabled="joinSession.$invalid" ng-click="ctrl.joinSession()">Join</button>
 </form>

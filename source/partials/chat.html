@@ -4,20 +4,18 @@
       <ul class="user">
         <li class="" ng-repeat="user in ctrl.users" ng-style="{'background-color': my_id==user.id ? '#cbcbcb' :'#E2E2E2'}">
           <span id='{{user.id}}' >{{ user.user_name }}</span>
-          <span class='you' ng-style="{'display': my_id==user.id ? 'block' :'none'}">You</span>
+          <span class='you' ng-style="{'display': my_id==user.id ? 'block' :'none'}">Me</span>
         </li>
       </ul>
     </div>
 
     <div class="col-xs-8">
-      <!-- showing messages -->
       <div class="chatbox" id="chatbox">
-        <p  ng-style="{
-                         'display': is_msg_show==true ? 'block' :'none'
-                      }">
-          <span class='sender'><strong>{{ msgs.name }} </strong>says:</span><br/>
-          <span class='sender_msg'>{{ msgs.msg }}</span>
-        </p>
+        <div class="messages_holder">
+          <p ng-repeat="message in ctrl.messages">
+            <span class='sender'><strong>{{ message.from }}</strong></span><span class='sender_msg'>{{ message.msg }}</span>
+          </p>
+        </div>
       </div>
       <br/>
       <div id="name-group" class="form-group">

@@ -1,14 +1,16 @@
 angular.module('MyApp')
-    .controller('ChatCtrl', function($scope, $http, toastr, $stateParams) {
+    .controller('ChatCtrl', function($scope, $http, toastr, $stateParams, $state) {
         var ctrl = this;
-
-        ctrl.UserName = window.prompt('Enter Your Name');
-
-        var socket = io();
+        ctrl.UserName = $stateParams.username;
+        let socket = io();
         $scope.clicked=null;
         $scope.msgs=null;
         $scope.my_id=null;
-        $scope.is_msg_show=false;
+        ctrl.messages = [];
+
+        if(!$stateParams.username || !$stateParams.paringCode) {
+            $state.go('join');
+        }
 
         // join specific session with session code
         socket.emit('join', $stateParams.paringCode);
@@ -32,9 +34,10 @@ angular.module('MyApp')
                     var message_params={
                         too: $stateParams.paringCode,
                         msg: ctrl.message,
-                        name: ctrl.UserName,
+                        from: ctrl.UserName,
                     };
                     socket.emit('send msg',message_params);
+                    ctrl.message = '';
                 }
         };
 
@@ -52,8 +55,7 @@ angular.module('MyApp')
 
         //displaying the messages.
         socket.on('get msg',function(data){
-            $scope.msgs=data;
-            $scope.is_msg_show=true;
+            ctrl.messages.push(data);
             $scope.$apply();
         });
     });
