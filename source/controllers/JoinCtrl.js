@@ -7,7 +7,7 @@ angular.module('MyApp')
                 udid: ctrl.udid,
             }).then((response) => {
                     localStorage.setItem('token', response.data.token);
-                    $state.go('chat');
+                    $state.go('chat', { paringCode: ctrl.udid });
                 },
                 (response) => {
                     if (response.status === 401) {

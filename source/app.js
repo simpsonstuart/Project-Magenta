@@ -2,7 +2,7 @@ angular.module('MyApp', ['ngResource', 'ngMessages', 'ngAnimate', 'toastr', 'ui.
   .config(function($stateProvider, $urlRouterProvider) {
     $stateProvider
       .state('chat', {
-        url: '/chat',
+        url: '/chat?paringCode',
         controller: 'ChatCtrl',
         controllerAs: 'ctrl',
         templateUrl: 'partials/chat.html'

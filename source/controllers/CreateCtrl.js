@@ -26,7 +26,7 @@ angular.module('MyApp')
                 max_users: ctrl.maxUsers
             }).then((response) => {
                     localStorage.setItem('token', response.data.token);
-                    $state.go('chat');
+                    $state.go('chat', { paringCode: udid });
                 },
                 (response) => {
                     if (response.status === 401) {
