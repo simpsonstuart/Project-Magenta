@@ -4,13 +4,10 @@
     <div class="col-xs-4">
       <ul class="user">
         <!-- appending username  -->
-        <li class="" ng-repeat="user_list in user_show" ng-style="{
-                          'background': clicked==user_list.id ?  '#d2d2d2' :'#e2e2e2',
-                          'cursor': my_id==user_list.id ?  'not-allowed' :'pointer'
-                      }" ng-click="clicked_highlight(user_list.id)">
-          <span id='{{user_list.id}}' >{{ user_list.user_name }}</span>
+        <li class="" ng-repeat="user in ctrl.users">
+          <span id='{{user.id}}' >{{ user.user_name }}</span>
                 <span class='you' ng-style="{
-                          'display': my_id==user_list.id ? 'block' :'none'
+                          'display': my_id==user.id ? 'block' :'none'
                       }">You</span>
         </li>
       </ul>

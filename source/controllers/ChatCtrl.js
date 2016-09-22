@@ -3,11 +3,9 @@ angular.module('MyApp')
         var ctrl = this;
 
         ctrl.UserName = window.prompt('Enter Your Name');
-        console.log($stateParams);
 
         var socket = io();
         $scope.clicked=null;
-        $scope.selected_id=null;
         $scope.msgs=null;
         $scope.my_id=null;
         $scope.is_msg_show=false;
@@ -16,14 +14,14 @@ angular.module('MyApp')
         socket.emit('join', $stateParams.paringCode);
 
         // adds user too list of users in chat
-        //socket.emit('user name',ctrl.UserName); // sending user name to the server
+        socket.emit('user name',ctrl.UserName);
 
         socket.on('user entrance',function(data,my_id){
             //checking the user id
             if($scope.my_id==null){
                 $scope.my_id=my_id;
             }
-            $scope.user_show=data;
+            ctrl.users = data;
             $scope.$apply();
         });
 
@@ -33,11 +31,9 @@ angular.module('MyApp')
                 if (keyCode === 13) {
                     var message_params={
                         too: $stateParams.paringCode,
-                        id:$scope.selected_id,
                         msg: ctrl.message,
                         name: ctrl.UserName,
                     };
-                    $scope.msg_text='';
                     socket.emit('send msg',message_params);
                 }
         };
@@ -48,9 +44,9 @@ angular.module('MyApp')
             $scope.selected_id=id;
         };
 
-        //on exit updating the List od users
+        //on exit remove user from list
         socket.on('exit',function(data){
-            $scope.user_show=data;
+            ctrl.users = data;
             $scope.$apply();
         });
 
