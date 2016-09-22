@@ -306,7 +306,7 @@ body {
   padding: 20px;
 }
 body {
-  font-family: cursive;
+  font-family: sans-serif;
 }
 .container{
   padding-top:20px;
@@ -328,7 +328,6 @@ body {
     text-decoration: none;
     list-style-type: none;
     padding: 10px;
-    cursor: pointer;
     margin-top: 5px;
     height: 35px;
 }
