@@ -31,9 +31,12 @@ angular.module('MyApp')
         ctrl.sendMessage = function($event){
             let keyCode = $event.which || $event.keyCode;
                 if (keyCode === 13) {
+                    var encryptedContent = CryptoJS.AES.encrypt(ctrl.message, '770A8A65DA156D24EE2A093277530142');
+                    console.log(encryptedContent);
+                    console.log(CryptoJS.AES.decrypt(encryptedContent, '770A8A65DA156D24EE2A093277530142').toString(CryptoJS.enc.Utf8));
                     let message_params={
                         too: $stateParams.paringCode,
-                        msg: ctrl.message,
+                        msg: CryptoJS.AES.encrypt(ctrl.message, '770A8A65DA156D24EE2A093277530142').toString(),
                         from: ctrl.UserName,
                     };
                     socket.emit('send msg',message_params);
