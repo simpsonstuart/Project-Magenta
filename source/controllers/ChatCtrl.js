@@ -7,6 +7,7 @@ angular.module('MyApp')
         $scope.msgs=null;
         $scope.my_id=null;
         ctrl.messages = [];
+
         // kicks user too join if code and username missing
         if(!$stateParams.username || !$stateParams.paringCode) {
             $state.go('join');
@@ -16,13 +17,14 @@ angular.module('MyApp')
         socket.emit('join', $stateParams.paringCode);
 
         // adds user too list of users in chat
-        socket.emit('user name',ctrl.UserName);
+        socket.emit('user name',ctrl.UserName, $stateParams.paringCode);
 
-        socket.on('user entrance',function(data,my_id){
+        socket.on('user entrance', function(data,my_id){
             //checking the user id
             if($scope.my_id==null){
                 $scope.my_id=my_id;
             }
+            // maybe add code here too add self too array on init
             ctrl.users = data;
             $scope.$apply();
         });
@@ -39,6 +41,7 @@ angular.module('MyApp')
                         from: CryptoJS.AES.encrypt(ctrl.UserName, $stateParams.secret).toString(),
                         checksum: CryptoJS.SHA3(encrypted).toString(),
                         timestamp: Date.now(),
+                        token: localStorage.getItem('token'),
                     };
                     socket.emit('send msg',message_params);
 
@@ -53,13 +56,7 @@ angular.module('MyApp')
                     ctrl.message = '';
                 }
         };
-
-        //to highlight selected row
-        $scope.clicked_highlight = function(id){
-            $scope.clicked=id;
-            $scope.selected_id=id;
-        };
-
+        
         //on exit remove user from list
         socket.on('exit',function(data){
             ctrl.users = data;
@@ -82,6 +79,11 @@ angular.module('MyApp')
             } else {
                 toastr.error('Non authentic message received!');
             }
+            $scope.$apply();
+        });
+
+        socket.on('bad auth',function(data){
+            toastr.error(Data);
             $scope.$apply();
         });
     });

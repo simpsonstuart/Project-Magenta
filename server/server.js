@@ -69,33 +69,6 @@ if (app.get('env') === 'production') {
     });
 }
 
-
-/*
- |--------------------------------------------------------------------------
- | Login Required Middleware
- |--------------------------------------------------------------------------
- */
-function ensureAuthenticated(req, res, next) {
-  if (!req.header('Authorization')) {
-    return res.status(401).send({ message: 'Please make sure your request has an Authorization header' });
-  }
-  var token = req.header('Authorization').split(' ')[1];
-
-  var payload = null;
-  try {
-    payload = jwt.decode(token, config.TOKEN_SECRET);
-  }
-  catch (err) {
-    return res.status(401).send({ message: err.message });
-  }
-
-  if (payload.exp <= moment().unix()) {
-    return res.status(401).send({ message: 'Token has expired' });
-  }
-  req.user = payload.sub;
-  next();
-}
-
 /*
  |--------------------------------------------------------------------------
  | Generate JSON Web Token
@@ -120,36 +93,56 @@ function createJWT(pairing) {
 var users=[];
 
 // Auto initiated on connect to server
-io.on('connection',function(socket){
+io.on('connection', function(socket){
 
-    socket.on('join', function(room) {
+    socket.on('join', function(room, req) {
         socket.join(room);
     });
 
     // todo modify socket too only emit too users of session and only show users of session
     //Storing users into array as an object
-    socket.on('user name',function(user_name){
+    socket.on('user name', function(user_name, room){
         users.push({id:socket.id,user_name:user_name});
         len=users.length;
         len--;
         //Sending th user Id and List of users
-        io.emit('user entrance',users,users[len].id);
+        //io.emit('user entrance',users,users[len].id);
+
+        //sends only too others not self todo add logic too send message too my side
+        socket.broadcast.to(room).emit('user entrance', users, users[len].id);
     });
 
     //Sending message to specific person
-    socket.on('send msg',function(req){
-        socket.broadcast.to(req.too).emit('get msg',
-            {
-                msg:req.msg,
-                id:req.id,
-                from:req.from,
-                checksum:req.checksum,
-                timestamp:req.timestamp
-            });
+    socket.on('send msg', function(req){
+        if (!req.token) {
+            return io.emit('bad auth', 'No token sent!');
+        }
+
+        var payload = null;
+        try {
+            payload = jwt.decode(req.token, config.TOKEN_SECRET);
+        }
+        catch (err) {
+            return io.emit('bad auth', 'Token Invalid!');
+        }
+
+        if (payload.exp <= moment().unix()) {
+            return io.emit('bad auth', 'Token expired!');
+        } else {
+            socket.broadcast.to(req.too).emit('get msg',
+                {
+                    msg:req.msg,
+                    id:req.id,
+                    from:req.from,
+                    checksum:req.checksum,
+                    timestamp:req.timestamp
+                });
+        }
+
     });
 
     //Removing user when user left the chatroom
-    socket.on('disconnect',function(){
+    socket.on('disconnect', function(){
         for(var i=0;i<users.length;i++){
             if(users[i].id==socket.id){
                 users.splice(i,1); //Removing single user
