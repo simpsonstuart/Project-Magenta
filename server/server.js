@@ -138,7 +138,14 @@ io.on('connection',function(socket){
 
     //Sending message to specific person
     socket.on('send msg',function(req){
-        socket.broadcast.to(req.too).emit('get msg',{ msg:req.msg, id:req.id, from:req.from });
+        socket.broadcast.to(req.too).emit('get msg',
+            {
+                msg:req.msg,
+                id:req.id,
+                from:req.from,
+                checksum:req.checksum,
+                timestamp:req.timestamp
+            });
     });
 
     //Removing user when user left the chatroom

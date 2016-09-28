@@ -32,11 +32,12 @@ angular.module('MyApp')
             // on enter key send message
             let keyCode = $event.which || $event.keyCode;
                 if (keyCode === 13) {
+                    let encrypted = CryptoJS.AES.encrypt(ctrl.message, $stateParams.secret).toString();
                     let message_params= {
                         too: $stateParams.paringCode,
-                        msg: CryptoJS.AES.encrypt(ctrl.message, $stateParams.secret).toString(),
+                        msg: encrypted,
                         from: CryptoJS.AES.encrypt(ctrl.UserName, $stateParams.secret).toString(),
-                        checksum: CryptoJS.SHA3(CryptoJS.AES.encrypt(ctrl.UserName, $stateParams.secret).toString()),
+                        checksum: CryptoJS.SHA3(encrypted).toString(),
                         timestamp: Date.now(),
                     };
                     socket.emit('send msg',message_params);
@@ -75,7 +76,8 @@ angular.module('MyApp')
                 checksum: data.checksum,
                 timestamp: data.timestamp,
             };
-            if (message.checksum === CryptoJS.SHA3(data.msg)) {
+
+            if (data.checksum === CryptoJS.SHA3(data.msg).toString()) {
                 ctrl.messages.push(message);
             } else {
                 toastr.error('Non authentic message received!');
