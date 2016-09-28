@@ -32,12 +32,12 @@ angular.module('MyApp')
             // on enter key send message
             let keyCode = $event.which || $event.keyCode;
                 if (keyCode === 13) {
-                    var encryptedContent = CryptoJS.AES.encrypt(ctrl.message, '770A8A65DA156D24EE2A093277530142');
-                    console.log(CryptoJS.AES.decrypt(encryptedContent, '770A8A65DA156D24EE2A093277530142').toString(CryptoJS.enc.Utf8));
                     let message_params= {
                         too: $stateParams.paringCode,
-                        msg: CryptoJS.AES.encrypt(ctrl.message, '770A8A65DA156D24EE2A093277530142').toString(),
-                        from: ctrl.UserName,
+                        msg: CryptoJS.AES.encrypt(ctrl.message, $stateParams.secret).toString(),
+                        from: CryptoJS.AES.encrypt(ctrl.UserName, $stateParams.secret).toString(),
+                        checksum: CryptoJS.SHA3(CryptoJS.AES.encrypt(ctrl.UserName, $stateParams.secret).toString()),
+                        timestamp: Date.now(),
                     };
                     socket.emit('send msg',message_params);
 
@@ -45,7 +45,8 @@ angular.module('MyApp')
                     let message = {
                         too: message_params.too,
                         msg: ctrl.message,
-                        from: `${message_params.from}(Me)`,
+                        from: `${ctrl.UserName} (Me)`,
+                        timestamp: message_params.timestamp,
                     };
                     ctrl.messages.push(message);
                     ctrl.message = '';
@@ -69,10 +70,16 @@ angular.module('MyApp')
             // create a decrypted message object and push into array of messages
             let message = {
                 too: data.too,
-                msg: CryptoJS.AES.decrypt(data.msg, '770A8A65DA156D24EE2A093277530142').toString(CryptoJS.enc.Utf8),
-                from: data.from,
+                msg: CryptoJS.AES.decrypt(data.msg, $stateParams.secret).toString(CryptoJS.enc.Utf8),
+                from: CryptoJS.AES.decrypt(data.from , $stateParams.secret).toString(CryptoJS.enc.Utf8),
+                checksum: data.checksum,
+                timestamp: data.timestamp,
             };
-            ctrl.messages.push(message);
+            if (message.checksum === CryptoJS.SHA3(data.msg)) {
+                ctrl.messages.push(message);
+            } else {
+                toastr.error('Non authentic message received!');
+            }
             $scope.$apply();
         });
     });
