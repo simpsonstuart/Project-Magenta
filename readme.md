@@ -7,7 +7,8 @@ ROUTES:
 
 — http://localhost:3000/#/create —- Lets you create a new session that users can join
 — http://localhost:3000/#/join — Lets you join an already created session
-— http://localhost:3000/#/chat - You will be taken here automatically upon successfully joining a session. This is where the chats take place.
+— http://localhost:3000/#/chat - You will be taken here automatically upon successfully joining a session.
+This is where the chats take place.
 
 
 
@@ -24,3 +25,9 @@ DEFINITIONS:
 
 FLOW CHART :
 https://www.lucidchart.com/documents/edit/9b76daad-d67c-4129-8ef3-59cdb2f9b573#
+
+STARTING THE PROGRAM
+1.) Make sure MongoDB is installed on the local system with the executable for your OS
+2.) navigate too the server directory and run node server.js
+3.) open a browser and go too http://localhost:3000
+4.) You can begin creating sessions by navigating too /create or joining by navigating too /join
