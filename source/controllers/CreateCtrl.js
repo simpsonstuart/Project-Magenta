@@ -28,6 +28,7 @@ angular.module('MyApp')
                 max_users: ctrl.maxUsers
             }).then((response) => {
                     localStorage.setItem('token', response.data.token);
+                // todo move this too chat and chekc if should be opened
                     $mdDialog.show({
                         contentElement: '#popupModal',
                         parent: angular.element(document.body)
