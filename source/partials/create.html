@@ -18,3 +18,17 @@
     </div>
     <button class="main_button" ng-disabled="createSession.$invalid" ng-click="ctrl.createSession()">Create</button>
 </form>
+<div style="visibility: hidden">
+    <div class="md-dialog-container" id="popupModal">
+        <md-dialog layout-padding="" class="modal_body">
+            <div class="modal_content">
+                <h1>Credentials</h1>
+                  <span class="cred_span">Session ID {{ctrl.udid}}</span>
+                  <span class="cred_span">Session Code {{ctrl.code}}</span>
+                  <span class="cred_span">Session Secret {{ctrl.secret}}</span>
+                <button class="btn btn-primary btn-lg button_regular" ng-click="vm.cancel()">Cancel</button>
+                <button class="btn btn-primary btn-lg button_regular" ng-disabled="user_form.$invalid" ng-click="vm.postEditUser()">Update User</button>
+            </div>
+        </md-dialog>
+    </div>
+</div>

@@ -1,10 +1,11 @@
 angular.module('MyApp')
-    .controller('CreateCtrl', function($scope, $http, toastr, $stateParams, $state, $log) {
+    .controller('CreateCtrl', function($scope, $http, toastr, $stateParams, $state, $log, $mdDialog) {
         var ctrl = this;
         ctrl.createSession = () => {
-            //todo add modal popup with logic creater that generates codes from values
-            ctrl.code ='4328328732832458923hhfsdfh34h5fgh54d';
-            
+            // generate password with jen library
+            let hdl = new Jen(true);
+            ctrl.code = hdl.password(256, 70000);
+            ctrl.secret = '';
             // generates random udid based on offset random and current precise time
             let d = Date.now();
             if(window.performance && typeof window.performance.now === "function"){
@@ -15,6 +16,7 @@ angular.module('MyApp')
                 d = Math.floor(d/16);
                 return (c=='x' ? r : (r&0x3|0x8)).toString(16);
             });
+            ctrl.udid = udid;
 
             // sends server the pairing code and expiry data only not password!
             $http.post('/store_code', {
@@ -26,6 +28,10 @@ angular.module('MyApp')
                 max_users: ctrl.maxUsers
             }).then((response) => {
                     localStorage.setItem('token', response.data.token);
+                    $mdDialog.show({
+                        contentElement: '#popupModal',
+                        parent: angular.element(document.body)
+                    });
                     $state.go('chat', { paringCode: udid });
                 },
                 (response) => {
