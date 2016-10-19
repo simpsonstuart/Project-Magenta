@@ -40,9 +40,4 @@ angular.module('MyApp')
                     }
                 });
         };
-
-        // hides modal
-        ctrl.continue =  () => {
-            $mdDialog.hide();
-        };
     });
