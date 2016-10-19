@@ -5,7 +5,7 @@ angular.module('MyApp')
             // generate password with jen library
             let hdl = new Jen(true);
             ctrl.code = hdl.password(256, 70000);
-            ctrl.secret = '';
+            ctrl.secret = hdl.password(256, 70000);
             // generates random udid based on offset random and current precise time
             let d = Date.now();
             if(window.performance && typeof window.performance.now === "function"){
