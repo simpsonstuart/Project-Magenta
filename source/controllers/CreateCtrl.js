@@ -4,8 +4,8 @@ angular.module('MyApp')
         ctrl.createSession = () => {
             // generate password with jen library
             let hdl = new Jen(true);
-            ctrl.code = hdl.password(256, 70000);
-            ctrl.secret = hdl.password(256, 70000);
+            ctrl.code = hdl.password(256, 1000);
+            ctrl.secret = hdl.password(256, 60000);
             // generates random udid based on offset random and current precise time
             let d = Date.now();
             if(window.performance && typeof window.performance.now === "function"){
@@ -39,5 +39,10 @@ angular.module('MyApp')
                        $log.info('Error storing pairing code!', response.data);
                     }
                 });
+        };
+
+        // hides modal
+        ctrl.continue =  () => {
+            $mdDialog.hide();
         };
     });
