@@ -12,7 +12,7 @@ angular.module('MyApp')
                 d += performance.now(); //use high-precision timer if available
             }
             const udid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-                var r = (d + Math.random()*16)%16 | 0;
+                let r = (d + Math.random()*16)%16 | 0;
                 d = Math.floor(d/16);
                 return (c=='x' ? r : (r&0x3|0x8)).toString(16);
             });
@@ -28,17 +28,20 @@ angular.module('MyApp')
                 max_users: ctrl.maxUsers
             }).then((response) => {
                     localStorage.setItem('token', response.data.token);
-                // todo move this too chat and chekc if should be opened
                     $mdDialog.show({
                         contentElement: '#popupModal',
                         parent: angular.element(document.body)
                     });
-                    $state.go('chat', { paringCode: udid });
                 },
                 (response) => {
                     if (response.status === 401) {
                        $log.info('Error storing pairing code!', response.data);
                     }
                 });
+        };
+        // hides modal
+        ctrl.continue =  () => {
+            $mdDialog.hide();
+            $state.go('chat', { paringCode: ctrl.udid });
         };
     });

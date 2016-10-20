@@ -86,9 +86,4 @@ angular.module('MyApp')
             toastr.error(Data);
             $scope.$apply();
         });
-
-        // hides modal
-        ctrl.continue =  () => {
-            $mdDialog.hide();
-        };
     });
