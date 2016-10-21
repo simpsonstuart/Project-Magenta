@@ -351,6 +351,14 @@ body {
 label {
     display: block;
 }
+textarea {
+    resize: none;
+}
+.button_con_holder {
+    margin-top: 25px;
+    width: 100%;
+    height: 46px;
+}
 /* Fonts*/
 
 /* latin-ext */

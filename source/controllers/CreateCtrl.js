@@ -42,6 +42,6 @@ angular.module('MyApp')
         // hides modal
         ctrl.continue =  () => {
             $mdDialog.hide();
-            $state.go('chat', { paringCode: ctrl.udid });
+            $state.go('chat', { paringCode: ctrl.udid, username: 'test', secret: ctrl.secret });
         };
     });

@@ -23,10 +23,23 @@
         <md-dialog layout-padding="" class="modal_body">
             <div class="modal_content">
                 <h1>Credentials</h1>
-                  <span class="cred_span">Session ID {{ctrl.udid}}</span>
-                  <span class="cred_span">Session Code {{ctrl.code}}</span>
-                  <span class="cred_span">Session Secret {{ctrl.secret}}</span>
-                <button class="btn btn-primary btn-lg button_regular" ng-click="ctrl.continue()">Continue to Chat</button>
+                <form>
+                    <div class="input_group">
+                    <label for="code">Session ID:</label>
+                    <textarea rows="1" cols="60" id="sesid" readonly>{{ctrl.udid}}</textarea>
+                    </div>
+                    <div class="input_group">
+                    <label for="code">Session Code:</label>
+                    <textarea rows="6" cols="60" id="code" readonly>{{ctrl.code}}</textarea>
+                     </div>
+                    <div class="input_group">
+                    <label for="secret">Session Secret:</label>
+                    <textarea rows="10" cols="60" id="secret" readonly>{{ctrl.secret}}</textarea>
+                    </div>
+                </form>
+                <div class="button_con_holder">
+                    <button class="btn btn-primary btn-lg button_regular" ng-click="ctrl.continue()">Continue to Chat</button>
+                </div>
             </div>
         </md-dialog>
     </div>
