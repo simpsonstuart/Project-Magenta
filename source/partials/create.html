@@ -38,7 +38,25 @@
                     </div>
                 </form>
                 <div class="button_con_holder">
-                    <button class="btn btn-primary btn-lg button_regular" ng-click="ctrl.continue()">Continue to Chat</button>
+                    <button class="btn btn-primary btn-lg button_regular" ng-click="ctrl.goEnterName()">Continue to Chat</button>
+                </div>
+            </div>
+        </md-dialog>
+    </div>
+</div>
+<div style="visibility: hidden">
+    <div class="md-dialog-container" id="nameModal">
+        <md-dialog layout-padding="" class="modal_body">
+            <div class="modal_content">
+                <h1>Enter Your Name</h1>
+                <form>
+                    <div class="input_group">
+                        <label for="username">Name:</label>
+                        <input class="input_default" type="text" id="username" ng-model="ctrl.username" placeholder="Name">
+                    </div>
+                </form>
+                <div class="button_con_holder">
+                    <button class="btn btn-primary btn-lg button_regular" ng-click="ctrl.continue()">Continue</button>
                 </div>
             </div>
         </md-dialog>

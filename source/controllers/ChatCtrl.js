@@ -7,6 +7,7 @@ angular.module('MyApp')
         $scope.msgs=null;
         $scope.my_id=null;
         ctrl.messages = [];
+        let secret = sessionStorage.getItem('secret');
 
         // kicks user too join if code and username missing
         if(!$stateParams.username || !$stateParams.paringCode) {
@@ -34,11 +35,11 @@ angular.module('MyApp')
             // on enter key send message
             let keyCode = $event.which || $event.keyCode;
                 if (keyCode === 13) {
-                    let encrypted = CryptoJS.AES.encrypt(ctrl.message, $stateParams.secret).toString();
+                    let encrypted = CryptoJS.AES.encrypt(ctrl.message, secret).toString();
                     let message_params= {
                         too: $stateParams.paringCode,
                         msg: encrypted,
-                        from: CryptoJS.AES.encrypt(ctrl.UserName, $stateParams.secret).toString(),
+                        from: CryptoJS.AES.encrypt(ctrl.UserName, secret).toString(),
                         checksum: CryptoJS.SHA3(encrypted).toString(),
                         timestamp: Date.now(),
                         token: localStorage.getItem('token'),
@@ -68,8 +69,8 @@ angular.module('MyApp')
             // create a decrypted message object and push into array of messages
             let message = {
                 too: data.too,
-                msg: CryptoJS.AES.decrypt(data.msg, $stateParams.secret).toString(CryptoJS.enc.Utf8),
-                from: CryptoJS.AES.decrypt(data.from , $stateParams.secret).toString(CryptoJS.enc.Utf8),
+                msg: CryptoJS.AES.decrypt(data.msg, secret).toString(CryptoJS.enc.Utf8),
+                from: CryptoJS.AES.decrypt(data.from , secret).toString(CryptoJS.enc.Utf8),
                 checksum: data.checksum,
                 timestamp: data.timestamp,
             };
