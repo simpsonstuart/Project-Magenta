@@ -100,20 +100,18 @@ io.on('connection', function(socket){
     });
 
     // todo modify socket too only emit too users of session and only show users of session
-    //Storing users into array as an object
+    // Storing users into array as an object
     socket.on('user name', function(user_name, room){
         users.push({id:socket.id,user_name:user_name});
         len=users.length;
         len--;
-        //Sending th user Id and List of users
-        //io.emit('user entrance',users,users[len].id);
-
         //sends only too others not self todo add logic too send message too my side
         socket.broadcast.to(room).emit('user entrance', users, users[len].id);
     });
 
-    //Sending message to specific person
+    // Sending message to specific session
     socket.on('send msg', function(req){
+        // check auth before sending message
         if (!req.token) {
             return io.emit('bad auth', 'No token sent!');
         }
@@ -166,7 +164,24 @@ app.post('/join_session', function(req, res) {
       if (!isMatch) {
         return res.status(401).send({ message: 'Invalid session code' });
       }
-      res.send({ token: createJWT(req.body.code) });
+        let fromDate = new Date(pairing.date_from);
+        let tooDate = new Date(pairing.date_too);
+        let currentDate = new Date();
+        // checks if from and too date have occured or expired
+        if (currentDate - fromDate === 0 || currentDate - fromDate > 0){
+            if (currentDate - tooDate === 0 || currentDate - tooDate < 0){
+
+                res.send({ token: createJWT(req.body.code) });
+            } else {
+                Pairing.remove({_id : pairing._id}, function(err) {
+                    if (err)
+                     console.log(err);
+                });
+                res.status(403).send({ message: 'Session has expired!' });
+            }
+        } else {
+            res.status(403).send({ message: 'Session is not yet valid!' });
+        }
     });
     });
 });

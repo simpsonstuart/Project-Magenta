@@ -17,6 +17,9 @@ angular.module('MyApp')
                     if (response.status === 404) {
                         toastr.error('Session ID not found!');
                     }
+                    if (response.status === 403) {
+                        toastr.error(response.data.message);
+                    }
                 });
         }
     });
